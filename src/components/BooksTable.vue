@@ -36,6 +36,13 @@
       </tr>
     </tbody>
   </table>
+  <ConfirmationModal
+    message="Are you sure you want to delete this book?"
+    title="Confirm Deletion"
+    :isOpen="isModalOpen"
+    @close="onModalClose"
+    @yesClick="onModalYesClick"
+  />
 </template>
 
 <script setup lang="ts">
@@ -46,10 +53,13 @@ import { useRouter } from 'vue-router';
 import BaseButton from './BaseButton.vue';
 import { Pencil } from 'lucide-vue-next';
 import { Trash } from 'lucide-vue-next';
+import ConfirmationModal from './ConfirmationModal.vue';
 
 const router = useRouter();
 
 const books = ref<BookDTO[]>([]);
+const isModalOpen = ref<boolean>(false);
+const deleteId = ref<string>('');
 
 const onEditClick = (id: string) => {
   router.push({
@@ -61,10 +71,21 @@ const onEditClick = (id: string) => {
 };
 
 const onDeleteClick = async (id: string) => {
-  try {
-    await deleteBook(id);
+  isModalOpen.value = true;
+  deleteId.value = id;
+};
 
-    books.value = books.value.filter((item) => item.id !== id);
+const onModalClose = () => {
+  isModalOpen.value = false;
+  deleteId.value = '';
+};
+
+const onModalYesClick = async () => {
+  isModalOpen.value = false;
+  try {
+    await deleteBook(deleteId.value);
+
+    books.value = books.value.filter((item) => item.id !== deleteId.value);
   } catch (error: any) {
     console.error(error);
   }
