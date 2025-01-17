@@ -36,7 +36,11 @@ import { useRoute } from 'vue-router';
 import BaseButton from '@/components/BaseButton.vue';
 import { Save } from 'lucide-vue-next';
 import { ChevronRight } from 'lucide-vue-next';
+import { ToastVariant } from '@/models/toast';
+import { useToast } from '@/composables/useToast';
+import { isAxiosError } from 'axios';
 
+const toast = useToast();
 const route = useRoute();
 const id = route.params.id as string;
 
@@ -48,9 +52,13 @@ const model = ref<CreateBookRequestDTO>({
 const onFormSubmit = async () => {
   try {
     const response = await updateBook(id, model.value);
-    console.log(response);
+    model.value.author = response.author;
+    model.value.title = response.title;
+    toast.open('Book successfully updated!', ToastVariant.SUCCESS);
   } catch (error: any) {
-    console.error(error);
+    if (isAxiosError(error)) {
+      toast.open(error.response?.data.message, ToastVariant.ERROR);
+    }
   }
 };
 
@@ -60,7 +68,9 @@ const fetchBookData = async () => {
     model.value.author = response.author;
     model.value.title = response.title;
   } catch (error: any) {
-    console.error(error);
+    if (isAxiosError(error)) {
+      toast.open(error.response?.data.message, ToastVariant.ERROR);
+    }
   }
 };
 

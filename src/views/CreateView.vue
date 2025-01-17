@@ -35,18 +35,28 @@ import { ref } from 'vue';
 import BaseButton from '@/components/BaseButton.vue';
 import { Plus } from 'lucide-vue-next';
 import { ChevronRight } from 'lucide-vue-next';
+import { useToast } from '@/composables/useToast';
+import { ToastVariant } from '@/models/toast';
+import { isAxiosError } from 'axios';
+import { useRouter } from 'vue-router';
 
 const model = ref<CreateBookRequestDTO>({
   author: '',
   title: '',
 });
 
+const router = useRouter();
+const toast = useToast();
+
 const onFormSubmit = async () => {
   try {
-    const response = await createBook(model.value);
-    console.log(response);
+    await createBook(model.value);
+    toast.open('Book successfully created!', ToastVariant.SUCCESS);
+    router.push({ name: 'home' });
   } catch (error: any) {
-    console.error(error);
+    if (isAxiosError(error)) {
+      toast.open(error.response?.data.message, ToastVariant.ERROR);
+    }
   }
 };
 </script>

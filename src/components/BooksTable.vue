@@ -54,12 +54,16 @@ import BaseButton from './BaseButton.vue';
 import { Pencil } from 'lucide-vue-next';
 import { Trash } from 'lucide-vue-next';
 import ConfirmationModal from './ConfirmationModal.vue';
+import { useToast } from '@/composables/useToast';
+import { ToastVariant } from '@/models/toast';
+import { isAxiosError } from 'axios';
 
 const router = useRouter();
+const toast = useToast();
 
 const books = ref<BookDTO[]>([]);
 const isModalOpen = ref<boolean>(false);
-const deleteId = ref<string>('');
+const bookToDeleteId = ref<string>('');
 
 const onEditClick = (id: string) => {
   router.push({
@@ -72,22 +76,24 @@ const onEditClick = (id: string) => {
 
 const onDeleteClick = async (id: string) => {
   isModalOpen.value = true;
-  deleteId.value = id;
+  bookToDeleteId.value = id;
 };
 
 const onModalClose = () => {
   isModalOpen.value = false;
-  deleteId.value = '';
+  bookToDeleteId.value = '';
 };
 
 const onModalYesClick = async () => {
   isModalOpen.value = false;
   try {
-    await deleteBook(deleteId.value);
-
-    books.value = books.value.filter((item) => item.id !== deleteId.value);
+    await deleteBook(bookToDeleteId.value);
+    books.value = books.value.filter((item) => item.id !== bookToDeleteId.value);
+    toast.open('Book successfully deleted!', ToastVariant.SUCCESS);
   } catch (error: any) {
-    console.error(error);
+    if (isAxiosError(error)) {
+      toast.open(error.response?.data.message, ToastVariant.ERROR);
+    }
   }
 };
 
@@ -95,7 +101,9 @@ const fetchBooksData = async () => {
   try {
     books.value = await fetchBooks();
   } catch (error: any) {
-    console.error(error);
+    if (isAxiosError(error)) {
+      toast.open(error.response?.data.message, ToastVariant.ERROR);
+    }
   }
 };
 
