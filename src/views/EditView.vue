@@ -14,59 +14,31 @@
         </li>
       </ol>
     </nav>
-    <form @submit.prevent="onFormSubmit">
-      <div class="flex flex-col gap-2">
-        <label>Title</label>
-        <input v-model="model.title" class="border border-gray-500 px-4 py-2" type="text" />
-      </div>
-      <div class="flex flex-col gap-2 mb-4">
-        <label>Author</label>
-        <input v-model="model.author" class="border border-gray-500 px-4 py-2" type="text" />
-      </div>
-      <BaseButton type="submit"><Save :size="16" /><span>Save</span></BaseButton>
-    </form>
+    <EditBookForm v-if="bookDTO" :bookDTO="bookDTO" />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { CreateBookRequestDTO } from '@/models/createBookRequestDTO';
-import { fetchBook, updateBook } from '@/services/booksService';
+import EditBookForm from '@/components/EditBookForm.vue';
+import { useToast } from '@/composables/useToast';
+import type { BookDTO } from '@/models/bookDTO';
+import { ToastVariant } from '@/models/toast';
+import { fetchBook } from '@/services/booksService';
+import { isAxiosError } from 'axios';
+import { ChevronRight } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import BaseButton from '@/components/BaseButton.vue';
-import { Save } from 'lucide-vue-next';
-import { ChevronRight } from 'lucide-vue-next';
-import { ToastVariant } from '@/models/toast';
-import { useToast } from '@/composables/useToast';
-import { isAxiosError } from 'axios';
 
 const toast = useToast();
 const route = useRoute();
 const id = route.params.id as string;
 
-const model = ref<CreateBookRequestDTO>({
-  author: '',
-  title: '',
-});
-
-const onFormSubmit = async () => {
-  try {
-    const response = await updateBook(id, model.value);
-    model.value.author = response.author;
-    model.value.title = response.title;
-    toast.open('Book successfully updated!', ToastVariant.SUCCESS);
-  } catch (error: any) {
-    if (isAxiosError(error)) {
-      toast.open(error.response?.data.message, ToastVariant.ERROR);
-    }
-  }
-};
+const bookDTO = ref<BookDTO | null>();
 
 const fetchBookData = async () => {
   try {
     const response = await fetchBook(id);
-    model.value.author = response.author;
-    model.value.title = response.title;
+    bookDTO.value = response;
   } catch (error: any) {
     if (isAxiosError(error)) {
       toast.open(error.response?.data.message, ToastVariant.ERROR);

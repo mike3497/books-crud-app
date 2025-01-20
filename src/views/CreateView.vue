@@ -14,49 +14,11 @@
         </li>
       </ol>
     </nav>
-    <form @submit.prevent="onFormSubmit">
-      <div class="flex flex-col gap-2">
-        <label>Title</label>
-        <input v-model="model.title" class="border border-gray-500 px-4 py-2" type="text" />
-      </div>
-      <div class="flex flex-col gap-2 mb-4">
-        <label>Author</label>
-        <input v-model="model.author" class="border border-gray-500 px-4 py-2" type="text" />
-      </div>
-      <BaseButton type="submit"><Plus :size="16" /><span>Create</span></BaseButton>
-    </form>
+    <CreateBookForm />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { CreateBookRequestDTO } from '@/models/createBookRequestDTO';
-import { createBook } from '@/services/booksService';
-import { ref } from 'vue';
-import BaseButton from '@/components/BaseButton.vue';
-import { Plus } from 'lucide-vue-next';
+import CreateBookForm from '@/components/CreateBookForm.vue';
 import { ChevronRight } from 'lucide-vue-next';
-import { useToast } from '@/composables/useToast';
-import { ToastVariant } from '@/models/toast';
-import { isAxiosError } from 'axios';
-import { useRouter } from 'vue-router';
-
-const model = ref<CreateBookRequestDTO>({
-  author: '',
-  title: '',
-});
-
-const router = useRouter();
-const toast = useToast();
-
-const onFormSubmit = async () => {
-  try {
-    await createBook(model.value);
-    toast.open('Book successfully created!', ToastVariant.SUCCESS);
-    router.push({ name: 'home' });
-  } catch (error: any) {
-    if (isAxiosError(error)) {
-      toast.open(error.response?.data.message, ToastVariant.ERROR);
-    }
-  }
-};
 </script>
