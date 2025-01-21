@@ -24,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
+import BaseButton from '@/components/shared/BaseButton.vue';
 import { defineProps } from 'vue';
-import BaseButton from './BaseButton.vue';
 
 defineProps<{
   isOpen: boolean;

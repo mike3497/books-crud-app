@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from '@/components/BaseButton.vue';
 import BooksTable from '@/components/BooksTable.vue';
+import BaseButton from '@/components/shared/BaseButton.vue';
 import { ButtonVariant } from '@/types/buttonVariant';
 import { useRouter } from 'vue-router';
 

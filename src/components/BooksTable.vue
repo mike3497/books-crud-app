@@ -46,6 +46,8 @@
 </template>
 
 <script setup lang="ts">
+import BaseButton from '@/components/shared/BaseButton.vue';
+import ConfirmationModal from '@/components/shared/ConfirmationModal.vue';
 import { useToast } from '@/composables/useToast';
 import type { BookDTO } from '@/models/bookDTO';
 import { ToastVariant } from '@/models/toast';
@@ -55,8 +57,6 @@ import { isAxiosError } from 'axios';
 import { Pencil, Trash } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import BaseButton from './BaseButton.vue';
-import ConfirmationModal from './ConfirmationModal.vue';
 
 const router = useRouter();
 const toast = useToast();

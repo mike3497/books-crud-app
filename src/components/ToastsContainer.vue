@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import BaseToast from '@/components/BaseToast.vue';
+import BaseToast from '@/components/shared/BaseToast.vue';
 import { useToastsStore } from '@/stores/toastsStore';
 
 const toastsStore = useToastsStore();

@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from '@/components/BaseButton.vue';
-import TextInput from '@/components/TextInput.vue';
+import BaseButton from '@/components/shared/BaseButton.vue';
+import TextInput from '@/components/shared/TextInput.vue';
 import { useToast } from '@/composables/useToast';
 import type { BookDTO } from '@/models/bookDTO';
 import type { EditBookForm } from '@/models/editBookForm';
