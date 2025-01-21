@@ -25,12 +25,12 @@
         <td class="px-4 py-2 border-b border-gray-200 text-sm">{{ book.author }}</td>
         <td class="px-4 py-2 border-b border-gray-200 text-sm">
           <div class="flex flex-row gap-2">
-            <BaseButton @click="onEditClick(book.id)"
-              ><Pencil :size="16" /><span>Edit</span></BaseButton
-            >
-            <BaseButton @click="onDeleteClick(book.id)"
-              ><Trash :size="16" /><span>Delete</span></BaseButton
-            >
+            <BaseButton :variant="ButtonVariant.PRIMARY" @click="onEditClick(book.id)">
+              <Pencil :size="16" />Edit
+            </BaseButton>
+            <BaseButton :variant="ButtonVariant.DANGER" @click="onDeleteClick(book.id)">
+              <Trash :size="16" />Delete
+            </BaseButton>
           </div>
         </td>
       </tr>
@@ -46,17 +46,17 @@
 </template>
 
 <script setup lang="ts">
+import { useToast } from '@/composables/useToast';
 import type { BookDTO } from '@/models/bookDTO';
+import { ToastVariant } from '@/models/toast';
 import { deleteBook, fetchBooks } from '@/services/booksService';
+import { ButtonVariant } from '@/types/buttonVariant';
+import { isAxiosError } from 'axios';
+import { Pencil, Trash } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import BaseButton from './BaseButton.vue';
-import { Pencil } from 'lucide-vue-next';
-import { Trash } from 'lucide-vue-next';
 import ConfirmationModal from './ConfirmationModal.vue';
-import { useToast } from '@/composables/useToast';
-import { ToastVariant } from '@/models/toast';
-import { isAxiosError } from 'axios';
 
 const router = useRouter();
 const toast = useToast();

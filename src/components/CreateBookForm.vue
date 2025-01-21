@@ -3,7 +3,7 @@
     <TextInput name="title" label="Title" />
     <TextInput name="author" label="Author" />
     <div>
-      <BaseButton type="submit">Create</BaseButton>
+      <BaseButton type="submit" :variant="ButtonVariant.PRIMARY"><Plus />Create</BaseButton>
     </div>
   </form>
 </template>
@@ -16,7 +16,9 @@ import type { CreateBookForm } from '@/models/createBookForm';
 import type { CreateBookRequestDTO } from '@/models/createBookRequestDTO';
 import { ToastVariant } from '@/models/toast';
 import { createBook } from '@/services/booksService';
+import { ButtonVariant } from '@/types/buttonVariant';
 import { isAxiosError } from 'axios';
+import { Plus } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
 import { useRouter } from 'vue-router';
 import * as Yup from 'yup';
