@@ -1,5 +1,8 @@
 <template>
-  <table class="table-auto border-collapse border border-gray-200 w-full">
+  <div v-if="isLoading" class="flex flex-col items-center justify-center p-8">
+    <LoadingSpinner />
+  </div>
+  <table v-else class="table-auto border-collapse border border-gray-200 w-full">
     <thead>
       <tr>
         <th
@@ -48,6 +51,7 @@
 <script setup lang="ts">
 import BaseButton from '@/components/shared/BaseButton.vue';
 import ConfirmationModal from '@/components/shared/ConfirmationModal.vue';
+import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import { useToast } from '@/composables/useToast';
 import type { BookDTO } from '@/models/bookDTO';
 import { ToastVariant } from '@/models/toast';
@@ -62,6 +66,7 @@ const router = useRouter();
 const toast = useToast();
 
 const books = ref<BookDTO[]>([]);
+const isLoading = ref<boolean>(false);
 const isModalOpen = ref<boolean>(false);
 const bookToDeleteId = ref<string>('');
 
@@ -99,11 +104,14 @@ const onModalYesClick = async () => {
 
 const fetchBooksData = async () => {
   try {
+    isLoading.value = true;
     books.value = await fetchBooks();
   } catch (error: any) {
     if (isAxiosError(error)) {
       toast.open(error.response?.data.message, ToastVariant.ERROR);
     }
+  } finally {
+    isLoading.value = false;
   }
 };
 
