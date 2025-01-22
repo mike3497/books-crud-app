@@ -4,6 +4,7 @@
     <textarea
       class="block w-full px-4 py-2 border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg"
       type="text"
+      rows="5"
       :id="name"
       :name="name"
       @input="handleChange"
