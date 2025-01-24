@@ -1,7 +1,9 @@
 <template>
-  <AppHeader />
-  <RouterView />
-  <AppFooter />
+  <div class="flex flex-col h-screen justify-between">
+    <AppHeader />
+    <RouterView class="mb-auto" />
+    <AppFooter />
+  </div>
   <ToastsContainer />
 </template>
 
