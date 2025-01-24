@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-2" :class="{ 'has-error': !!errorMessage }">
-    <label :for="name">{{ label }}</label>
+    <label class="font-bold" :for="name">{{ label }}</label>
     <select
       class="block w-full px-4 py-2 border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg"
       :id="name"

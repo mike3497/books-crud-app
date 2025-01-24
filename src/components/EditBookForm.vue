@@ -30,11 +30,11 @@
     <TextAreaInput name="description" label="Description" />
     <div class="grid grid-cols-2 gap-4">
       <div class="flex flex-col gap-2">
-        <span>Created Date</span>
+        <span class="font-bold">Created Date</span>
         <DateDisplay :value="bookDTO.createdAt" />
       </div>
       <div class="flex flex-col gap-2">
-        <span>Updated Date</span>
+        <span class="font-bold">Updated Date</span>
         <DateDisplay :value="updatedAt" />
       </div>
     </div>
