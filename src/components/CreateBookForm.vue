@@ -60,7 +60,6 @@ const validationSchema = Yup.object().shape({
   author: Yup.string().required('Author is required'),
   description: Yup.string().required('Description is required'),
   genre: Yup.string().required('Genre is required'),
-  isbn: Yup.string().required('ISBN is required'),
   publishedDate: Yup.string().required('Published Date is required'),
   title: Yup.string().required('Title is required'),
 });
