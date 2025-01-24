@@ -15,7 +15,10 @@
       </ol>
     </nav>
     <BaseCard>
-      <EditBookForm v-if="bookDTO" :bookDTO="bookDTO" />
+      <div v-if="isLoading" class="flex items-center justify-center p-8">
+        <LoadingSpinner />
+      </div>
+      <EditBookForm v-else-if="bookDTO" :bookDTO="bookDTO" />
     </BaseCard>
   </div>
 </template>
@@ -23,6 +26,7 @@
 <script setup lang="ts">
 import EditBookForm from '@/components/EditBookForm.vue';
 import BaseCard from '@/components/shared/BaseCard.vue';
+import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import { useToast } from '@/composables/useToast';
 import type { BookDTO } from '@/models/bookDTO';
 import { ToastVariant } from '@/models/toast';
@@ -37,15 +41,19 @@ const route = useRoute();
 const id = route.params.id as string;
 
 const bookDTO = ref<BookDTO | null>();
+const isLoading = ref<boolean>(false);
 
 const fetchBookData = async () => {
   try {
+    isLoading.value = true;
     const response = await fetchBook(id);
     bookDTO.value = response;
   } catch (error: any) {
     if (isAxiosError(error)) {
       toast.open(error.response?.data.message, ToastVariant.ERROR);
     }
+  } finally {
+    isLoading.value = false;
   }
 };
 
