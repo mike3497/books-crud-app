@@ -14,11 +14,14 @@
         </li>
       </ol>
     </nav>
-    <CreateBookForm />
+    <BaseCard>
+      <CreateBookForm />
+    </BaseCard>
   </div>
 </template>
 
 <script setup lang="ts">
 import CreateBookForm from '@/components/CreateBookForm.vue';
+import BaseCard from '@/components/shared/BaseCard.vue';
 import { ChevronRight } from 'lucide-vue-next';
 </script>
