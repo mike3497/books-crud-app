@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-2" :class="{ 'has-error': !!errorMessage }">
     <label class="font-bold" :for="name">{{ label }}</label>
     <input
-      class="block w-full px-4 py-2 border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg"
+      class="block w-full px-2 h-[42px] border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg"
       type="text"
       :id="name"
       :name="name"
