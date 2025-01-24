@@ -1,5 +1,6 @@
 <template>
   <div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">Edit Book</h1>
     <nav class="mb-4">
       <ol class="flex flex-row items-center gap-2">
         <li>
@@ -14,7 +15,6 @@
       </ol>
     </nav>
     <BaseCard>
-      <h1 class="text-2xl font-bold mb-4">Edit Book</h1>
       <EditBookForm v-if="bookDTO" :bookDTO="bookDTO" />
     </BaseCard>
   </div>
