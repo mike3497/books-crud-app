@@ -18,6 +18,11 @@
         <th
           class="px-4 py-2 bg-gray-50 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
         >
+          Genre
+        </th>
+        <th
+          class="px-4 py-2 bg-gray-50 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+        >
           Actions
         </th>
       </tr>
@@ -26,6 +31,7 @@
       <tr v-for="book in books" :key="book.id" class="bg-white border-b border-gray-200">
         <td class="px-4 py-2 border-b border-gray-200 text-sm">{{ book.title }}</td>
         <td class="px-4 py-2 border-b border-gray-200 text-sm">{{ book.author }}</td>
+        <td class="px-4 py-2 border-b border-gray-200 text-sm">{{ book.genre }}</td>
         <td class="px-4 py-2 border-b border-gray-200 text-sm">
           <div class="flex flex-row gap-2">
             <BaseButton :variant="ButtonVariant.PRIMARY" @click="onEditClick(book.id)">
