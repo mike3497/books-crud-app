@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-col gap-2" :class="{ 'has-error': !!errorMessage }">
-    <label class="font-bold" :for="name">{{ label }}</label>
+    <label class="font-bold" :for="name"
+      >{{ label }}<span v-if="isRequired" class="text-red-700 ml-1">*</span></label
+    >
     <div class="relative">
       <select
         class="block w-full px-2 h-[42px] border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg appearance-none"
@@ -30,6 +32,7 @@ import { toRef } from 'vue';
 
 const props = defineProps<{
   label: string;
+  isRequired: boolean;
   name: string;
   value?: string;
 }>();

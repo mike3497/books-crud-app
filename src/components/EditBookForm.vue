@@ -1,12 +1,12 @@
 <template>
   <form class="flex flex-col gap-4" @submit="onSubmit">
     <div class="grid grid-cols-2 gap-2">
-      <TextInput name="title" label="Title" />
-      <TextInput name="author" label="Author" />
+      <TextInput name="title" label="Title" :isRequired="true" />
+      <TextInput name="author" label="Author" :isRequired="true" />
     </div>
     <div class="grid grid-cols-3 gap-2">
-      <DateField name="publishedDate" label="Published Date" />
-      <SelectField name="genre" label="Genre">
+      <DateField name="publishedDate" label="Published Date" :isRequired="true" />
+      <SelectField name="genre" label="Genre" :isRequired="true">
         <option value="Biography/Autobiography">Biography/Autobiography</option>
         <option value="Children's">Children's</option>
         <option value="Contemporary">Contemporary</option>
@@ -25,9 +25,9 @@
         <option value="True Crime">True Crime</option>
         <option value="Young Adult (YA)">Young Adult (YA)</option>
       </SelectField>
-      <TextInput name="isbn" label="ISBN" />
+      <TextInput name="isbn" label="ISBN" :isRequired="false" />
     </div>
-    <TextAreaInput name="description" label="Description" />
+    <TextAreaInput name="description" label="Description" :isRequired="true" />
     <div class="grid grid-cols-2 gap-4">
       <div class="flex flex-col gap-2">
         <span class="font-bold">Created Date</span>
