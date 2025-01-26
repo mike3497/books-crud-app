@@ -42,10 +42,20 @@
       <BaseButton type="submit" :variant="ButtonVariant.PRIMARY"><Save />Save</BaseButton>
     </div>
   </form>
+  <ConfirmationModal
+    message="Are you sure you want to save changes? This action cannot be undone."
+    noText="Cancel"
+    title="Save Changes?"
+    yesText="Save"
+    :isOpen="isModalOpen"
+    @close="onModalClose"
+    @yesClick="onModalYesClick"
+  />
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/shared/BaseButton.vue';
+import ConfirmationModal from '@/components/shared/ConfirmationModal.vue';
 import DateField from '@/components/shared/DateField.vue';
 import SelectField from '@/components/shared/SelectField.vue';
 import TextAreaInput from '@/components/shared/TextAreaField.vue';
@@ -80,12 +90,18 @@ const validationSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
 });
 
-const { handleSubmit, setFieldValue } = useForm<EditBookForm>({ validationSchema });
+const { handleSubmit, setFieldValue, values } = useForm<EditBookForm>({ validationSchema });
 const toast = useToast();
 
+const isModalOpen = ref<boolean>(false);
 const updatedAt = ref<Date>(props.bookDTO.updatedAt);
 
-const onSubmit = handleSubmit(async (values: EditBookForm) => {
+const onModalClose = () => {
+  isModalOpen.value = false;
+};
+
+const onModalYesClick = async () => {
+  isModalOpen.value = false;
   try {
     const updateBookRequestDTO: UpdateBookRequestDTO = {
       author: values.author,
@@ -110,6 +126,10 @@ const onSubmit = handleSubmit(async (values: EditBookForm) => {
       toast.open(error.response?.data.message, ToastVariant.ERROR);
     }
   }
+};
+
+const onSubmit = handleSubmit(() => {
+  isModalOpen.value = true;
 });
 
 onMounted(() => {

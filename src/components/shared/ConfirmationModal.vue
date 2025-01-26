@@ -16,8 +16,8 @@
             {{ message }}
           </p>
           <div class="flex flex-row gap-2 justify-end mt-4">
-            <BaseButton @click="$emit('close')">No</BaseButton>
-            <BaseButton :variant="ButtonVariant.DANGER" @click="$emit('yesClick')">Yes</BaseButton>
+            <BaseButton :variant="noVariant" @click="$emit('close')">{{ noText }}</BaseButton>
+            <BaseButton :variant="yesVariant" @click="$emit('yesClick')">{{ yesText }}</BaseButton>
           </div>
         </div>
       </div>
@@ -30,11 +30,23 @@ import BaseButton from '@/components/shared/BaseButton.vue';
 import { ButtonVariant } from '@/types/buttonVariant';
 import { defineProps } from 'vue';
 
-defineProps<{
-  isOpen: boolean;
-  message: string;
-  title: string;
-}>();
+withDefaults(
+  defineProps<{
+    isOpen: boolean;
+    message: string;
+    noText: string;
+    noVariant?: ButtonVariant;
+    title: string;
+    yesText?: string;
+    yesVariant?: ButtonVariant;
+  }>(),
+  {
+    noText: 'No',
+    noVariant: ButtonVariant.DEFAULT,
+    yesText: 'Yes',
+    yesVariant: ButtonVariant.PRIMARY,
+  },
+);
 
 defineEmits<{
   (e: 'close'): void;

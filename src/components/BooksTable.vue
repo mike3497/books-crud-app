@@ -47,7 +47,9 @@
   </table>
   <ConfirmationModal
     message="Are you sure you want to delete this book? This action cannot be undone."
-    title="Confirm Deletion"
+    noText="Cancel"
+    title="Delete Book?"
+    yesText="Delete"
     :isOpen="isModalOpen"
     @close="onModalClose"
     @yesClick="onModalYesClick"
