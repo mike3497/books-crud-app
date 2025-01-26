@@ -5,7 +5,9 @@
     </Transition>
     <Transition name="modal">
       <div v-if="isOpen" class="fixed inset-0 z-10 flex items-center justify-center">
-        <div class="relative bg-white w-[512px] p-4 flex flex-col gap-4">
+        <div
+          class="relative bg-white w-[512px] p-4 flex flex-col gap-4 rounded-lg border border-gray-300"
+        >
           <div class="flex items-center justify-between">
             <h1 class="font-bold text-xl">{{ title }}</h1>
             <BaseButton @click="$emit('close')">X</BaseButton>
@@ -15,7 +17,7 @@
           </p>
           <div class="flex flex-row gap-2 justify-end mt-4">
             <BaseButton @click="$emit('close')">No</BaseButton>
-            <BaseButton @click="$emit('yesClick')">Yes</BaseButton>
+            <BaseButton :variant="ButtonVariant.DANGER" @click="$emit('yesClick')">Yes</BaseButton>
           </div>
         </div>
       </div>
@@ -25,6 +27,7 @@
 
 <script setup lang="ts">
 import BaseButton from '@/components/shared/BaseButton.vue';
+import { ButtonVariant } from '@/types/buttonVariant';
 import { defineProps } from 'vue';
 
 defineProps<{
