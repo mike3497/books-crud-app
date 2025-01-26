@@ -46,7 +46,7 @@
     </tbody>
   </table>
   <ConfirmationModal
-    message="Are you sure you want to delete this book?"
+    message="Are you sure you want to delete this book? This action cannot be undone."
     title="Confirm Deletion"
     :isOpen="isModalOpen"
     @close="onModalClose"
