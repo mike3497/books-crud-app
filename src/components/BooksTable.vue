@@ -2,37 +2,21 @@
   <div v-if="isLoading" class="flex flex-col items-center justify-center p-8">
     <LoadingSpinner />
   </div>
-  <table v-else class="table-auto border-collapse border border-gray-200 w-full">
+  <table v-else class="table-auto border-collapse w-full text-sm">
     <thead>
       <tr>
-        <th
-          class="px-4 py-2 bg-gray-50 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
-        >
-          Title
-        </th>
-        <th
-          class="px-4 py-2 bg-gray-50 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
-        >
-          Author
-        </th>
-        <th
-          class="px-4 py-2 bg-gray-50 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
-        >
-          Genre
-        </th>
-        <th
-          class="px-4 py-2 bg-gray-50 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
-        >
-          Actions
-        </th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Title</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Author</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Genre</th>
+        <th class="px-4 py-2 border-b border-gray-300 text-left">Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="book in books" :key="book.id" class="bg-white border-b border-gray-200">
-        <td class="px-4 py-2 border-b border-gray-200 text-sm">{{ book.title }}</td>
-        <td class="px-4 py-2 border-b border-gray-200 text-sm">{{ book.author }}</td>
-        <td class="px-4 py-2 border-b border-gray-200 text-sm">{{ book.genre }}</td>
-        <td class="px-4 py-2 border-b border-gray-200 text-sm">
+      <tr v-for="book in books" :key="book.id" class="bg-white border-b border-gray-300">
+        <td class="px-4 py-2 border-b border-gray-300">{{ book.title }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ book.author }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ book.genre }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">
           <div class="flex flex-row gap-2">
             <BaseButton :variant="ButtonVariant.PRIMARY" @click="onEditClick(book.id)">
               <Pencil :size="16" />Edit
