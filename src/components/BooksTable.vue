@@ -2,33 +2,35 @@
   <div v-if="isLoading" class="flex flex-col items-center justify-center p-8">
     <LoadingSpinner />
   </div>
-  <table v-else class="table-auto border-collapse w-full text-sm">
-    <thead>
-      <tr>
-        <th class="px-4 py-2 border-b border-gray-300 text-left">Title</th>
-        <th class="px-4 py-2 border-b border-gray-300 text-left">Author</th>
-        <th class="px-4 py-2 border-b border-gray-300 text-left">Genre</th>
-        <th class="px-4 py-2 border-b border-gray-300 text-left">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="book in books" :key="book.id" class="bg-white border-b border-gray-300">
-        <td class="px-4 py-2 border-b border-gray-300">{{ book.title }}</td>
-        <td class="px-4 py-2 border-b border-gray-300">{{ book.author }}</td>
-        <td class="px-4 py-2 border-b border-gray-300">{{ book.genre }}</td>
-        <td class="px-4 py-2 border-b border-gray-300">
-          <div class="flex flex-row gap-2">
-            <BaseButton :variant="ButtonVariant.PRIMARY" @click="onEditClick(book.id)">
-              <Pencil :size="16" />Edit
-            </BaseButton>
-            <BaseButton :variant="ButtonVariant.DANGER" @click="onDeleteClick(book.id)">
-              <Trash :size="16" />Delete
-            </BaseButton>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div v-else class="overflow-auto">
+    <table class="border-collapse w-full text-sm">
+      <thead>
+        <tr>
+          <th class="px-4 py-2 border-b border-gray-300 text-left">Title</th>
+          <th class="px-4 py-2 border-b border-gray-300 text-left">Author</th>
+          <th class="px-4 py-2 border-b border-gray-300 text-left">Genre</th>
+          <th class="px-4 py-2 border-b border-gray-300 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="book in books" :key="book.id" class="bg-white border-b border-gray-300">
+          <td class="px-4 py-2 border-b border-gray-300">{{ book.title }}</td>
+          <td class="px-4 py-2 border-b border-gray-300">{{ book.author }}</td>
+          <td class="px-4 py-2 border-b border-gray-300">{{ book.genre }}</td>
+          <td class="px-4 py-2 border-b border-gray-300">
+            <div class="flex flex-row gap-2">
+              <BaseButton :variant="ButtonVariant.PRIMARY" @click="onEditClick(book.id)">
+                <Pencil :size="16" />Edit
+              </BaseButton>
+              <BaseButton :variant="ButtonVariant.DANGER" @click="onDeleteClick(book.id)">
+                <Trash :size="16" />Delete
+              </BaseButton>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <ConfirmationModal
     message="Are you sure you want to delete this book? This action cannot be undone."
     noText="Cancel"
