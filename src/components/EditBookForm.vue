@@ -1,10 +1,10 @@
 <template>
   <form class="flex flex-col gap-4" @submit="onSubmit">
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
       <TextInput name="title" label="Title" :isRequired="true" />
       <TextInput name="author" label="Author" :isRequired="true" />
     </div>
-    <div class="grid grid-cols-3 gap-2">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
       <DateField name="publishedDate" label="Published Date" :isRequired="true" />
       <SelectField name="genre" label="Genre" :isRequired="true">
         <option value="Biography/Autobiography">Biography/Autobiography</option>
@@ -28,7 +28,7 @@
       <TextInput name="isbn" label="ISBN" :isRequired="false" />
     </div>
     <TextAreaInput name="description" label="Description" :isRequired="true" />
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div class="flex flex-col gap-2">
         <span class="font-bold">Created Date</span>
         <DateDisplay :value="bookDTO.createdAt" />

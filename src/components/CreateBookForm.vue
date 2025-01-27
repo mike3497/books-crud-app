@@ -1,10 +1,10 @@
 <template>
   <form class="flex flex-col gap-4" @submit="onSubmit">
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
       <TextInput name="title" label="Title" :isRequired="true" />
       <TextInput name="author" label="Author" :isRequired="true" />
     </div>
-    <div class="grid grid-cols-3 gap-2">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
       <DateField name="publishedDate" label="Published Date" :isRequired="true" />
       <SelectField name="genre" label="Genre" :isRequired="true">
         <option value="Biography/Autobiography">Biography/Autobiography</option>
@@ -49,7 +49,6 @@ import { ButtonVariant } from '@/types/buttonVariant';
 import { isAxiosError } from 'axios';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { Plus } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
 import { useRouter } from 'vue-router';
 import * as Yup from 'yup';
