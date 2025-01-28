@@ -6,3 +6,9 @@
     </p>
   </footer>
 </template>
+
+<style scoped>
+footer {
+  box-shadow: 0 50vh 0 50vh #1e3a8a;
+}
+</style>
