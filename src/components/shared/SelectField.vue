@@ -5,7 +5,7 @@
     >
     <div class="relative">
       <select
-        class="block w-full px-2 h-[42px] border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg appearance-none"
+        class="appearance-none block w-full px-2 h-[42px] border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg appearance-none"
         :id="name"
         :name="name"
         :value="inputValue"

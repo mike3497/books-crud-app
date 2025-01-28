@@ -4,7 +4,7 @@
       >{{ label }}<span v-if="isRequired" class="text-red-700 ml-1">*</span></label
     >
     <input
-      class="block w-full px-2 h-[42px] border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg"
+      class="appearance-none block w-full px-2 h-[42px] border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg"
       type="text"
       :id="name"
       :name="name"
