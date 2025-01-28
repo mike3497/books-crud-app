@@ -4,7 +4,7 @@
       >{{ label }}<span v-if="isRequired" class="text-red-700 ml-1">*</span></label
     >
     <textarea
-      class="appearance-none block w-full px-2 py-2 border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg"
+      class="appearance-none block w-full px-2 py-2 bg-white border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg"
       type="text"
       rows="5"
       :id="name"
