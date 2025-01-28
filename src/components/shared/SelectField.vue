@@ -5,14 +5,14 @@
     >
     <div class="relative">
       <select
-        class="appearance-none block w-full px-2 h-[42px] bg-white border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg appearance-none"
+        class="block w-full px-2 h-[42px] bg-white border border-gray-300 focus-visible:outline-none focus-visible:border-blue-500 rounded-lg appearance-none"
         :id="name"
         :name="name"
         :value="inputValue"
         @input="handleChange"
         @blur="handleBlur"
       >
-        <option disabled value="">Select an option</option>
+        <option disabled value="">{{ placeholder }}</option>
         <slot></slot>
       </select>
       <div class="absolute top-1/2 right-2 transform -translate-y-1/2">
@@ -31,9 +31,10 @@ import { useField } from 'vee-validate';
 import { toRef } from 'vue';
 
 const props = defineProps<{
-  label: string;
   isRequired: boolean;
+  label: string;
   name: string;
+  placeholder: string;
   value?: string;
 }>();
 

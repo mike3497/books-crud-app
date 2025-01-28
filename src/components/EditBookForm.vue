@@ -6,7 +6,7 @@
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
       <DateField name="publishedDate" label="Published Date" :isRequired="true" />
-      <SelectField name="genre" label="Genre" :isRequired="true">
+      <SelectField name="genre" label="Genre" placeholder="Select a genre" :isRequired="true">
         <option value="Biography/Autobiography">Biography/Autobiography</option>
         <option value="Children's">Children's</option>
         <option value="Classics">Classics</option>
