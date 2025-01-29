@@ -33,3 +33,20 @@ const name = toRef(props, 'name');
 
 const { value: inputValue, errorMessage, handleBlur, handleChange } = useField(name);
 </script>
+
+<style scoped>
+input::-internal-datetime-container {
+}
+
+input::-webkit-datetime-edit {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 100%;
+}
+
+input::-webkit-date-and-time-value {
+  text-align: left;
+  margin-top: 8px;
+}
+</style>
