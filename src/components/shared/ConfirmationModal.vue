@@ -8,7 +8,7 @@
       ></div>
     </Transition>
     <Transition name="modal">
-      <div v-if="isOpen" class="fixed inset-0 z-10 flex items-center justify-center">
+      <div v-if="isOpen" class="fixed inset-0 z-10 flex items-center justify-center px-4">
         <div
           class="relative bg-white dark:bg-gray-800 w-[512px] p-4 flex flex-col gap-4 rounded-lg border border-gray-300 dark:border-gray-700"
         >
