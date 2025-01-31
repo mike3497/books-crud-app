@@ -1,6 +1,6 @@
 <template>
   <AppHeader />
-  <RouterView class="mb-auto" />
+  <RouterView />
   <AppFooter />
   <ToastsContainer />
 </template>

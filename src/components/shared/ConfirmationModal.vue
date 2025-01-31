@@ -1,12 +1,16 @@
 <template>
   <div class="relative z-10">
     <Transition name="backdrop">
-      <div v-if="isOpen" class="fixed inset-0 bg-black/50" @click="$emit('close')"></div>
+      <div
+        v-if="isOpen"
+        class="fixed inset-0 bg-black/50 dark:bg-black/70"
+        @click="$emit('close')"
+      ></div>
     </Transition>
     <Transition name="modal">
       <div v-if="isOpen" class="fixed inset-0 z-10 flex items-center justify-center">
         <div
-          class="relative bg-white w-[512px] p-4 flex flex-col gap-4 rounded-lg border border-gray-300"
+          class="relative bg-white dark:bg-gray-800 w-[512px] p-4 flex flex-col gap-4 rounded-lg border border-gray-300 dark:border-gray-700"
         >
           <div class="flex items-center justify-between">
             <h1 class="font-bold text-xl">{{ title }}</h1>

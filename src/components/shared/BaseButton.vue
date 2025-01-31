@@ -37,7 +37,7 @@ const buttonClass = computed<string>(() => {
       case ButtonVariant.WARNING:
         return 'border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white';
       default:
-        return 'border border-gray-200 text-black hover:bg-gray-200';
+        return 'border border-gray-200 hover:bg-gray-200 dark:border-gray-700 dark:hover:bg-gray-700';
     }
   } else {
     switch (props.variant) {
@@ -52,7 +52,7 @@ const buttonClass = computed<string>(() => {
       case ButtonVariant.WARNING:
         return 'bg-yellow-500 text-white hover:bg-yellow-600';
       default:
-        return 'bg-gray-200 text-black hover:bg-gray-300';
+        return 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600';
     }
   }
 });

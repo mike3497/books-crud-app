@@ -3,21 +3,25 @@
     <LoadingSpinner />
   </div>
   <div v-else class="overflow-auto">
-    <table class="border-collapse w-full text-sm">
+    <table class="border-collapse w-full text-sm text-gray-900 dark:text-gray-100">
       <thead>
         <tr>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">Title</th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">Author</th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">Genre</th>
-          <th class="px-4 py-2 border-b border-gray-300 text-left">Actions</th>
+          <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-left">Title</th>
+          <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-left">Author</th>
+          <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-left">Genre</th>
+          <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-left">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="book in books" :key="book.id" class="bg-white border-b border-gray-300">
-          <td class="px-4 py-2 border-b border-gray-300">{{ book.title }}</td>
-          <td class="px-4 py-2 border-b border-gray-300">{{ book.author }}</td>
-          <td class="px-4 py-2 border-b border-gray-300">{{ book.genre }}</td>
-          <td class="px-4 py-2 border-b border-gray-300">
+        <tr
+          v-for="book in books"
+          :key="book.id"
+          class="bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+        >
+          <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ book.title }}</td>
+          <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ book.author }}</td>
+          <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ book.genre }}</td>
+          <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">
             <div class="flex flex-row gap-2">
               <BaseButton :variant="ButtonVariant.PRIMARY" @click="onEditClick(book.id)">
                 <Pencil :size="16" />Edit
