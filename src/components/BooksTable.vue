@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLoading" class="flex flex-col items-center justify-center p-8">
+  <div v-if="isSpinnerVisible" class="flex flex-col items-center justify-center p-8">
     <LoadingSpinner />
   </div>
   <div v-else class="overflow-auto">
@@ -65,6 +65,7 @@ const toast = useToast();
 
 const books = ref<BookDTO[]>([]);
 const isLoading = ref<boolean>(false);
+const isSpinnerVisible = ref<boolean>(false);
 const isModalOpen = ref<boolean>(false);
 const bookToDeleteId = ref<string>('');
 
@@ -103,13 +104,20 @@ const onModalYesClick = async () => {
 const fetchBooksData = async () => {
   try {
     isLoading.value = true;
-    books.value = await fetchBooks();
+    const spinnerTimeout = setTimeout(() => {
+      isSpinnerVisible.value = true;
+    }, 200);
+
+    const booksData = await fetchBooks();
+    clearTimeout(spinnerTimeout);
+    books.value = booksData;
   } catch (error: any) {
     if (isAxiosError(error)) {
       toast.open(error.response?.data.message, ToastVariant.ERROR);
     }
   } finally {
     isLoading.value = false;
+    isSpinnerVisible.value = false;
   }
 };
 
