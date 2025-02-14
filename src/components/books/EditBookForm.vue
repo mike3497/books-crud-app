@@ -7,39 +7,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
       <DateField name="publishedDate" label="Published Date" :isRequired="true" />
       <SelectField name="genre" label="Genre" placeholder="Select a genre" :isRequired="true">
-        <option value="Biography/Autobiography">Biography/Autobiography</option>
-        <option value="Children's">Children's</option>
-        <option value="Classics">Classics</option>
-        <option value="Comedy">Comedy</option>
-        <option value="Contemporary">Contemporary</option>
-        <option value="Drama">Drama</option>
-        <option value="Dystopian">Dystopian</option>
-        <option value="Epic Fantasy">Epic Fantasy</option>
-        <option value="Fantasy">Fantasy</option>
-        <option value="Graphic Novel">Graphic Novel</option>
-        <option value="Historical Fiction">Historical Fiction</option>
-        <option value="History">History</option>
-        <option value="Horror">Horror</option>
-        <option value="Magical Realism">Magical Realism</option>
-        <option value="Memoir">Memoir</option>
-        <option value="Mystery">Mystery</option>
-        <option value="Non-Fiction">Non-Fiction</option>
-        <option value="Other">Other</option>
-        <option value="Paranormal">Paranormal</option>
-        <option value="Philosophical">Philosophical</option>
-        <option value="Poetry">Poetry</option>
-        <option value="Political Thriller">Political Thriller</option>
-        <option value="Religious">Religious</option>
-        <option value="Romance">Romance</option>
-        <option value="Science">Science</option>
-        <option value="Science Fiction">Science Fiction</option>
-        <option value="Self-Help">Self-Help</option>
-        <option value="Short Stories">Short Stories</option>
-        <option value="Thriller">Thriller</option>
-        <option value="Travel">Travel</option>
-        <option value="True Crime">True Crime</option>
-        <option value="Western">Western</option>
-        <option value="Young Adult (YA)">Young Adult (YA)</option>
+        <option v-for="genre in genres" :key="genre.id" :value="genre.id">{{ genre.name }}</option>
       </SelectField>
       <TextInput name="isbn" label="ISBN" :isRequired="false" />
     </div>
@@ -65,23 +33,26 @@
     yesText="Save"
     :isOpen="isModalOpen"
     @close="onModalClose"
-    @yesClick="onModalYesClick"
+    @yes="onModalYesClick"
   />
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/shared/BaseButton.vue';
 import ConfirmationModal from '@/components/shared/ConfirmationModal.vue';
+import DateDisplay from '@/components/shared/DateDisplay.vue';
 import DateField from '@/components/shared/DateField.vue';
 import SelectField from '@/components/shared/SelectField.vue';
 import TextAreaInput from '@/components/shared/TextAreaField.vue';
 import TextInput from '@/components/shared/TextField.vue';
 import { useToast } from '@/composables/useToast';
-import type { BookDTO } from '@/models/bookDTO';
-import type { EditBookForm } from '@/models/editBookForm';
+import type { BookDTO } from '@/models/books/bookDTO';
+import type { EditBookForm } from '@/models/books/editBookForm';
+import type { UpdateBookRequestDTO } from '@/models/books/updateBookRequestDTO';
+import type { GenreDTO } from '@/models/genres/genreDTO';
 import { ToastVariant } from '@/models/toast';
-import type { UpdateBookRequestDTO } from '@/models/updateBookRequestDTO';
 import { updateBook } from '@/services/booksService';
+import { fetchGenres } from '@/services/genresService';
 import { ButtonVariant } from '@/types/buttonVariant';
 import { isAxiosError } from 'axios';
 import dayjs from 'dayjs';
@@ -90,7 +61,6 @@ import { Save } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
 import { onMounted, ref } from 'vue';
 import * as Yup from 'yup';
-import DateDisplay from './shared/DateDisplay.vue';
 
 dayjs.extend(utc);
 
@@ -111,6 +81,7 @@ const toast = useToast();
 
 const isModalOpen = ref<boolean>(false);
 const updatedAt = ref<Date>(props.bookDTO.updatedAt);
+const genres = ref<GenreDTO[]>([]);
 
 const onModalClose = () => {
   isModalOpen.value = false;
@@ -122,7 +93,7 @@ const onModalYesClick = async () => {
     const updateBookRequestDTO: UpdateBookRequestDTO = {
       author: values.author,
       description: values.description,
-      genre: values.genre,
+      genreId: values.genre,
       id: props.bookDTO.id,
       isbn: values.isbn,
       publishedAt: dayjs(values.publishedDate).utc().toISOString(),
@@ -131,7 +102,7 @@ const onModalYesClick = async () => {
     const response = await updateBook(updateBookRequestDTO);
     setFieldValue('author', response.author);
     setFieldValue('description', response.description);
-    setFieldValue('genre', response.genre);
+    setFieldValue('genre', response.genre.id);
     setFieldValue('isbn', response.isbn);
     setFieldValue('publishedDate', dayjs(response.publishedAt).format('YYYY-MM-DD'));
     setFieldValue('title', response.title);
@@ -148,10 +119,22 @@ const onSubmit = handleSubmit(() => {
   isModalOpen.value = true;
 });
 
+const fetchGenresData = async () => {
+  try {
+    genres.value = await fetchGenres();
+  } catch (error) {
+    if (isAxiosError(error)) {
+      toast.open(error.response?.data.message, ToastVariant.ERROR);
+    }
+  }
+};
+
+fetchGenresData();
+
 onMounted(() => {
   setFieldValue('author', props.bookDTO.author);
   setFieldValue('description', props.bookDTO.description);
-  setFieldValue('genre', props.bookDTO.genre);
+  setFieldValue('genre', props.bookDTO.genre.id);
   setFieldValue('isbn', props.bookDTO.isbn);
   setFieldValue('publishedDate', dayjs(props.bookDTO.publishedAt).format('YYYY-MM-DD'));
   setFieldValue('title', props.bookDTO.title);

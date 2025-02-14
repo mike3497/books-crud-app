@@ -1,8 +1,7 @@
-export interface UpdateBookRequestDTO {
+export interface CreateBookRequestDTO {
   author: string;
   description: string;
-  genre: string;
-  id: string;
+  genreId: string;
   isbn: string;
   publishedAt: string;
   title: string;

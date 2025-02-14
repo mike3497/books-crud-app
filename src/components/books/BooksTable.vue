@@ -20,7 +20,9 @@
         >
           <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ book.title }}</td>
           <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ book.author }}</td>
-          <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">{{ book.genre }}</td>
+          <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">
+            {{ book.genre.name }}
+          </td>
           <td class="px-4 py-2 border-b border-gray-300 dark:border-gray-700">
             <div class="flex flex-row gap-2">
               <BaseButton :variant="ButtonVariant.PRIMARY" @click="onEditClick(book.id)">
@@ -42,7 +44,7 @@
     yesText="Delete"
     :isOpen="isModalOpen"
     @close="onModalClose"
-    @yesClick="onModalYesClick"
+    @yes="onModalYesClick"
   />
 </template>
 
@@ -51,7 +53,7 @@ import BaseButton from '@/components/shared/BaseButton.vue';
 import ConfirmationModal from '@/components/shared/ConfirmationModal.vue';
 import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import { useToast } from '@/composables/useToast';
-import type { BookDTO } from '@/models/bookDTO';
+import type { BookDTO } from '@/models/books/bookDTO';
 import { ToastVariant } from '@/models/toast';
 import { deleteBook, fetchBooks } from '@/services/booksService';
 import { ButtonVariant } from '@/types/buttonVariant';
@@ -71,7 +73,7 @@ const bookToDeleteId = ref<string>('');
 
 const onEditClick = (id: string) => {
   router.push({
-    name: 'edit',
+    name: 'edit-book',
     params: {
       id,
     },

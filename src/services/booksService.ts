@@ -1,7 +1,7 @@
-import type { BookDTO } from '@/models/bookDTO';
-import type { UpdateBookRequestDTO } from '@/models/updateBookRequestDTO';
+import type { BookDTO } from '@/models/books/bookDTO';
+import type { CreateBookRequestDTO } from '@/models/books/createBookRequestDTO';
+import type { UpdateBookRequestDTO } from '@/models/books/updateBookRequestDTO';
 import axios from 'axios';
-import type { CreateBookRequestDTO } from './../models/createBookRequestDTO';
 
 export const fetchBooks = async (): Promise<BookDTO[]> => {
   const response = await axios.get(`${import.meta.env.VITE_APP_API_BASE_URL}/books`);

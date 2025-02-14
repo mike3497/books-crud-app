@@ -4,7 +4,7 @@
     <nav class="mb-4">
       <ol class="flex flex-row items-center gap-2">
         <li>
-          <RouterLink :to="{ name: 'home' }" class="underline">Home</RouterLink>
+          <RouterLink :to="{ name: 'books' }" class="underline">Books</RouterLink>
         </li>
         <li>
           <ChevronRight :size="16" />
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import CreateBookForm from '@/components/CreateBookForm.vue';
+import CreateBookForm from '@/components/books/CreateBookForm.vue';
 import BaseCard from '@/components/shared/BaseCard.vue';
 import { ChevronRight } from 'lucide-vue-next';
 </script>

@@ -1,25 +1,47 @@
+import BooksView from '@/views/books/BooksView.vue';
+import CreateBookView from '@/views/books/CreateBookView.vue';
+import EditBookView from '@/views/books/EditBookView.vue';
+import CreateGenreView from '@/views/genres/CreateGenreView.vue';
+import EditGenreView from '@/views/genres/EditGenreView.vue';
+import GenresView from '@/views/genres/GenresView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '@/views/HomeView.vue';
-import EditView from '@/views/EditView.vue';
-import CreateView from '@/views/CreateView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      redirect: '/books',
     },
     {
-      path: '/create',
-      name: 'create',
-      component: CreateView,
+      path: '/books',
+      name: 'books',
+      component: BooksView,
     },
     {
-      path: '/:id',
-      name: 'edit',
-      component: EditView,
+      path: '/books/create',
+      name: 'create-book',
+      component: CreateBookView,
+    },
+    {
+      path: '/books/:id',
+      name: 'edit-book',
+      component: EditBookView,
+    },
+    {
+      path: '/genres',
+      name: 'genres',
+      component: GenresView,
+    },
+    {
+      path: '/genres/create',
+      name: 'create-genre',
+      component: CreateGenreView,
+    },
+    {
+      path: '/genres/:id',
+      name: 'edit-genre',
+      component: EditGenreView,
     },
   ],
 });

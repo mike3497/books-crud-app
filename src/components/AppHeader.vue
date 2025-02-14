@@ -1,9 +1,15 @@
 <template>
   <header class="bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700">
     <div class="container mx-auto px-4 h-16 flex flex-row items-center justify-between">
-      <RouterLink :to="{ name: 'home' }">
-        <h1 class="font-bold text-2xl">Books CRUD App</h1>
-      </RouterLink>
+      <div class="flex gap-8 items-center">
+        <RouterLink :to="{ name: 'books' }">
+          <h1 class="font-bold text-2xl">Books CRUD App</h1>
+        </RouterLink>
+        <nav class="flex gap-4">
+          <RouterLink :to="{ name: 'books' }" activeClass="font-bold">Books</RouterLink>
+          <RouterLink :to="{ name: 'genres' }" activeClass="font-bold">Genres</RouterLink>
+        </nav>
+      </div>
       <div>
         <button
           @click="toggleDark()"

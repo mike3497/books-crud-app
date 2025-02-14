@@ -4,7 +4,7 @@
     <nav class="mb-4">
       <ol class="flex flex-row items-center gap-2">
         <li>
-          <RouterLink :to="{ name: 'home' }" class="underline">Home</RouterLink>
+          <RouterLink :to="{ name: 'books' }" class="underline">Books</RouterLink>
         </li>
         <li>
           <ChevronRight :size="16" />
@@ -24,11 +24,11 @@
 </template>
 
 <script setup lang="ts">
-import EditBookForm from '@/components/EditBookForm.vue';
+import EditBookForm from '@/components/books/EditBookForm.vue';
 import BaseCard from '@/components/shared/BaseCard.vue';
 import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import { useToast } from '@/composables/useToast';
-import type { BookDTO } from '@/models/bookDTO';
+import type { BookDTO } from '@/models/books/bookDTO';
 import { ToastVariant } from '@/models/toast';
 import { fetchBook } from '@/services/booksService';
 import { isAxiosError } from 'axios';
