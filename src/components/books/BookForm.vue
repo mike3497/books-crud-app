@@ -12,10 +12,10 @@
       <TextInput name="isbn" label="ISBN" :isRequired="false" />
     </div>
     <TextAreaInput name="description" label="Description" :isRequired="true" />
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div v-if="!isCreateMode" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div class="flex flex-col gap-2">
         <span class="font-bold">Created Date</span>
-        <DateDisplay :value="bookDTO.createdAt" />
+        <DateDisplay :value="createdAt" />
       </div>
       <div class="flex flex-col gap-2">
         <span class="font-bold">Updated Date</span>
@@ -23,23 +23,16 @@
       </div>
     </div>
     <div>
-      <BaseButton type="submit" :variant="ButtonVariant.PRIMARY"><Save />Save</BaseButton>
+      <BaseButton v-if="isCreateMode" type="submit" :variant="ButtonVariant.PRIMARY"
+        ><Plus />Create</BaseButton
+      >
+      <BaseButton v-else type="submit" :variant="ButtonVariant.PRIMARY"><Save />Save</BaseButton>
     </div>
   </form>
-  <ConfirmationModal
-    message="Are you sure you want to save changes? This action cannot be undone."
-    noText="Cancel"
-    title="Save Changes?"
-    yesText="Save"
-    :isOpen="isModalOpen"
-    @close="onModalClose"
-    @yes="onModalYesClick"
-  />
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/shared/BaseButton.vue';
-import ConfirmationModal from '@/components/shared/ConfirmationModal.vue';
 import DateDisplay from '@/components/shared/DateDisplay.vue';
 import DateField from '@/components/shared/DateField.vue';
 import SelectField from '@/components/shared/SelectField.vue';
@@ -47,67 +40,67 @@ import TextAreaInput from '@/components/shared/TextAreaField.vue';
 import TextInput from '@/components/shared/TextField.vue';
 import { useToast } from '@/composables/useToast';
 import type { BookDTO } from '@/models/books/bookDTO';
-import type { EditBookForm } from '@/models/books/editBookForm';
+import type { BookForm } from '@/models/books/bookForm';
+import type { CreateBookRequestDTO } from '@/models/books/createBookRequestDTO';
 import type { UpdateBookRequestDTO } from '@/models/books/updateBookRequestDTO';
 import type { GenreDTO } from '@/models/genres/genreDTO';
 import { ToastVariant } from '@/models/toast';
-import { updateBook } from '@/services/booksService';
+import { createBook, updateBook } from '@/services/booksService';
 import { fetchGenres } from '@/services/genresService';
 import { ButtonVariant } from '@/types/buttonVariant';
 import { isAxiosError } from 'axios';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import { Save } from 'lucide-vue-next';
+import { Plus, Save } from 'lucide-vue-next';
 import { useForm } from 'vee-validate';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import * as Yup from 'yup';
 
 dayjs.extend(utc);
 
 const props = defineProps<{
-  bookDTO: BookDTO;
+  bookDTO?: BookDTO;
+  isCreateMode: boolean;
 }>();
 
 const validationSchema = Yup.object().shape({
   author: Yup.string().required('Author is required'),
   description: Yup.string().required('Description is required'),
   genre: Yup.string().required('Genre is required'),
-  publishedDate: Yup.date().required('Published Date is required'),
+  publishedDate: Yup.string().required('Published Date is required'),
   title: Yup.string().required('Title is required'),
 });
 
-const { handleSubmit, setFieldValue, values } = useForm<EditBookForm>({ validationSchema });
+const { handleSubmit, setFieldValue } = useForm<BookForm>({ validationSchema });
+const router = useRouter();
 const toast = useToast();
 
-const isModalOpen = ref<boolean>(false);
-const updatedAt = ref<Date>(props.bookDTO.updatedAt);
 const genres = ref<GenreDTO[]>([]);
+const createdAt = ref<Date>();
+const updatedAt = ref<Date>();
 
-const onModalClose = () => {
-  isModalOpen.value = false;
-};
+const onSubmit = handleSubmit(async (values: BookForm) => {
+  if (props.isCreateMode) {
+    createBookHandler(values);
+  } else {
+    updateBookHandler(values);
+  }
+});
 
-const onModalYesClick = async () => {
-  isModalOpen.value = false;
+const createBookHandler = async (values: BookForm) => {
   try {
-    const updateBookRequestDTO: UpdateBookRequestDTO = {
+    const createBookRequestDTO: CreateBookRequestDTO = {
       author: values.author,
       description: values.description,
       genreId: values.genre,
-      id: props.bookDTO.id,
       isbn: values.isbn,
       publishedAt: dayjs(values.publishedDate).utc().toISOString(),
       title: values.title,
     };
-    const response = await updateBook(updateBookRequestDTO);
-    setFieldValue('author', response.author);
-    setFieldValue('description', response.description);
-    setFieldValue('genre', response.genre.id);
-    setFieldValue('isbn', response.isbn);
-    setFieldValue('publishedDate', dayjs(response.publishedAt).format('YYYY-MM-DD'));
-    setFieldValue('title', response.title);
-    updatedAt.value = response.updatedAt;
-    toast.open('Book successfully updated!', ToastVariant.SUCCESS);
+    await createBook(createBookRequestDTO);
+    toast.open('Book successfully created!', ToastVariant.SUCCESS);
+    router.push({ name: 'books' });
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       toast.open(error.response?.data.message, ToastVariant.ERROR);
@@ -115,9 +108,26 @@ const onModalYesClick = async () => {
   }
 };
 
-const onSubmit = handleSubmit(() => {
-  isModalOpen.value = true;
-});
+const updateBookHandler = async (values: BookForm) => {
+  try {
+    const updateBookRequestDTO: UpdateBookRequestDTO = {
+      author: values.author,
+      description: values.description,
+      genreId: values.genre,
+      id: props.bookDTO!.id,
+      isbn: values.isbn,
+      publishedAt: dayjs(values.publishedDate).utc().toISOString(),
+      title: values.title,
+    };
+    const response = await updateBook(updateBookRequestDTO);
+    setFieldValues(response);
+    toast.open('Book successfully updated!', ToastVariant.SUCCESS);
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      toast.open(error.response?.data.message, ToastVariant.ERROR);
+    }
+  }
+};
 
 const fetchGenresData = async () => {
   try {
@@ -129,14 +139,21 @@ const fetchGenresData = async () => {
   }
 };
 
-fetchGenresData();
+const setFieldValues = (bookDTO: BookDTO) => {
+  setFieldValue('author', bookDTO.author);
+  createdAt.value = bookDTO.createdAt;
+  setFieldValue('description', bookDTO.description);
+  setFieldValue('genre', bookDTO.genre.id);
+  setFieldValue('isbn', bookDTO.isbn);
+  setFieldValue('publishedDate', dayjs(bookDTO.publishedAt).format('YYYY-MM-DD'));
+  setFieldValue('title', bookDTO.title);
+  updatedAt.value = bookDTO.updatedAt;
+};
 
 onMounted(() => {
-  setFieldValue('author', props.bookDTO.author);
-  setFieldValue('description', props.bookDTO.description);
-  setFieldValue('genre', props.bookDTO.genre.id);
-  setFieldValue('isbn', props.bookDTO.isbn);
-  setFieldValue('publishedDate', dayjs(props.bookDTO.publishedAt).format('YYYY-MM-DD'));
-  setFieldValue('title', props.bookDTO.title);
+  fetchGenresData();
+  if (props.bookDTO) {
+    setFieldValues(props.bookDTO);
+  }
 });
 </script>

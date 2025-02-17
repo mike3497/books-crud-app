@@ -1,4 +1,4 @@
-export interface CreateBookForm {
+export interface BookForm {
   author: string;
   description: string;
   genre: string;

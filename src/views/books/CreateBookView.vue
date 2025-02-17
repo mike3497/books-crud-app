@@ -15,13 +15,13 @@
       </ol>
     </nav>
     <BaseCard>
-      <CreateBookForm />
+      <BookForm :isCreateMode="true" />
     </BaseCard>
   </div>
 </template>
 
 <script setup lang="ts">
-import CreateBookForm from '@/components/books/CreateBookForm.vue';
+import BookForm from '@/components/books/BookForm.vue';
 import BaseCard from '@/components/shared/BaseCard.vue';
 import { ChevronRight } from 'lucide-vue-next';
 </script>

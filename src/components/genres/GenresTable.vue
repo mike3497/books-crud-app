@@ -6,8 +6,12 @@
     <table class="border-collapse w-full text-sm text-gray-900 dark:text-gray-100">
       <thead>
         <tr>
-          <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-left">Name</th>
-          <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-left">Actions</th>
+          <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-left" scope="col">
+            Name
+          </th>
+          <th class="px-4 py-2 border-b border-gray-300 dark:border-gray-700 text-left" scope="col">
+            Actions
+          </th>
         </tr>
       </thead>
       <tbody>

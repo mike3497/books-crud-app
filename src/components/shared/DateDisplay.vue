@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { computed } from 'vue';
 
 const props = defineProps<{
-  value: string | Date;
+  value?: string | Date;
 }>();
 
 const formattedValue = computed<string>(() => {

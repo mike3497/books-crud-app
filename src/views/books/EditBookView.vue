@@ -18,13 +18,13 @@
       <div v-if="isLoading" class="flex items-center justify-center p-8">
         <LoadingSpinner />
       </div>
-      <EditBookForm v-else-if="bookDTO" :bookDTO="bookDTO" />
+      <BookForm v-else-if="bookDTO" :bookDTO="bookDTO" :isCreateMode="false" />
     </BaseCard>
   </div>
 </template>
 
 <script setup lang="ts">
-import EditBookForm from '@/components/books/EditBookForm.vue';
+import BookForm from '@/components/books/BookForm.vue';
 import BaseCard from '@/components/shared/BaseCard.vue';
 import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import { useToast } from '@/composables/useToast';
