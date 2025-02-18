@@ -12,8 +12,8 @@
 
 <script setup lang="ts">
 import { ToastVariant, type Toast } from '@/models/toast';
-import { type Component, computed, type PropType } from 'vue';
-import { CircleCheck, TriangleAlert, CircleAlert, CircleX } from 'lucide-vue-next';
+import { CircleAlert, CircleCheck, CircleX, TriangleAlert } from 'lucide-vue-next';
+import { computed, type Component, type PropType } from 'vue';
 
 const props = defineProps({
   toast: {
@@ -29,7 +29,7 @@ const backgroundClass = computed<string>(() => {
     case ToastVariant.INFO:
       return 'bg-blue-400';
     case ToastVariant.SUCCESS:
-      return 'bg-green-400';
+      return 'bg-green-600';
     case ToastVariant.WARNING:
       return 'bg-yellow-400';
     default:
