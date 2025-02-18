@@ -42,7 +42,7 @@
     noText="Cancel"
     title="Delete Book?"
     yesText="Delete"
-    :isOpen="isModalOpen"
+    :isOpen="isConfirmationModalOpen"
     @close="onModalClose"
     @yes="onModalYesClick"
   />
@@ -52,6 +52,7 @@
 import BaseButton from '@/components/shared/BaseButton.vue';
 import ConfirmationModal from '@/components/shared/ConfirmationModal.vue';
 import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
+import { useConfirmationModal } from '@/composables/useConfirmationModal';
 import { useToast } from '@/composables/useToast';
 import type { BookDTO } from '@/models/books/bookDTO';
 import { ToastVariant } from '@/models/toast';
@@ -64,12 +65,13 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const toast = useToast();
+const { isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal } =
+  useConfirmationModal();
 
 const books = ref<BookDTO[]>([]);
 const isLoading = ref<boolean>(false);
 const isSpinnerVisible = ref<boolean>(false);
-const isModalOpen = ref<boolean>(false);
-const bookToDeleteId = ref<string>('');
+const bookToDeleteId = ref<string>();
 
 const onEditClick = (id: string) => {
   router.push({
@@ -81,25 +83,26 @@ const onEditClick = (id: string) => {
 };
 
 const onDeleteClick = async (id: string) => {
-  isModalOpen.value = true;
+  openConfirmationModal();
   bookToDeleteId.value = id;
 };
 
 const onModalClose = () => {
-  isModalOpen.value = false;
-  bookToDeleteId.value = '';
+  closeConfirmationModal();
+  bookToDeleteId.value = undefined;
 };
 
 const onModalYesClick = async () => {
-  isModalOpen.value = false;
   try {
-    await deleteBook(bookToDeleteId.value);
+    await deleteBook(bookToDeleteId.value!);
     books.value = books.value.filter((item) => item.id !== bookToDeleteId.value);
     toast.open('Book successfully deleted!', ToastVariant.SUCCESS);
   } catch (error: any) {
     if (isAxiosError(error)) {
       toast.open(error.response?.data.message, ToastVariant.ERROR);
     }
+  } finally {
+    closeConfirmationModal();
   }
 };
 

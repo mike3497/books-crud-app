@@ -29,16 +29,28 @@
       <BaseButton v-else type="submit" :variant="ButtonVariant.PRIMARY"><Save />Save</BaseButton>
     </div>
   </form>
+  <ConfirmationModal
+    message="Are you sure you want to save changes? This action cannot be undone."
+    noText="Cancel"
+    title="Save Changes?"
+    yesText="Save"
+    :isOpen="isConfirmationModalOpen"
+    @close="closeConfirmationModal"
+    @yes="updateBookHandler"
+  />
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/shared/BaseButton.vue';
+import ConfirmationModal from '@/components/shared/ConfirmationModal.vue';
 import DateDisplay from '@/components/shared/DateDisplay.vue';
 import DateField from '@/components/shared/DateField.vue';
 import SelectField from '@/components/shared/SelectField.vue';
 import TextAreaInput from '@/components/shared/TextAreaField.vue';
 import TextInput from '@/components/shared/TextField.vue';
+import { useConfirmationModal } from '@/composables/useConfirmationModal';
 import { useToast } from '@/composables/useToast';
+import { deepClone } from '@/helpers/generalUtils';
 import type { BookDTO } from '@/models/books/bookDTO';
 import type { BookForm } from '@/models/books/bookForm';
 import type { CreateBookRequestDTO } from '@/models/books/createBookRequestDTO';
@@ -75,16 +87,20 @@ const validationSchema = Yup.object().shape({
 const { handleSubmit, setFieldValue } = useForm<BookForm>({ validationSchema });
 const router = useRouter();
 const toast = useToast();
+const { isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal } =
+  useConfirmationModal();
 
 const genres = ref<GenreDTO[]>([]);
 const createdAt = ref<Date>();
 const updatedAt = ref<Date>();
+const bookFormEditValues = ref<BookForm>();
 
 const onSubmit = handleSubmit(async (values: BookForm) => {
   if (props.isCreateMode) {
     createBookHandler(values);
   } else {
-    updateBookHandler(values);
+    bookFormEditValues.value = deepClone(values);
+    openConfirmationModal();
   }
 });
 
@@ -108,24 +124,27 @@ const createBookHandler = async (values: BookForm) => {
   }
 };
 
-const updateBookHandler = async (values: BookForm) => {
+const updateBookHandler = async () => {
   try {
     const updateBookRequestDTO: UpdateBookRequestDTO = {
-      author: values.author,
-      description: values.description,
-      genreId: values.genre,
+      author: bookFormEditValues.value!.author,
+      description: bookFormEditValues.value!.description,
+      genreId: bookFormEditValues.value!.genre,
       id: props.bookDTO!.id,
-      isbn: values.isbn,
-      publishedAt: dayjs(values.publishedDate).utc().toISOString(),
-      title: values.title,
+      isbn: bookFormEditValues.value!.isbn,
+      publishedAt: dayjs(bookFormEditValues.value!.publishedDate).utc().toISOString(),
+      title: bookFormEditValues.value!.title,
     };
     const response = await updateBook(updateBookRequestDTO);
     setFieldValues(response);
     toast.open('Book successfully updated!', ToastVariant.SUCCESS);
+    bookFormEditValues.value = undefined;
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       toast.open(error.response?.data.message, ToastVariant.ERROR);
     }
+  } finally {
+    closeConfirmationModal();
   }
 };
 
