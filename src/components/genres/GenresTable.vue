@@ -15,7 +15,13 @@
         </tr>
       </thead>
       <tbody>
+        <tr v-if="genres.length === 0">
+          <td colspan="2" class="px-4 py-2 text-center text-gray-500 dark:text-gray-400">
+            No Genres found
+          </td>
+        </tr>
         <tr
+          v-else
           v-for="genre in genres"
           :key="genre.id"
           class="bg-white dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
