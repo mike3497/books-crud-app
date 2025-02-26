@@ -1,7 +1,7 @@
 <template>
-  <div class="relative z-10">
+  <div class="relative z-30">
     <Transition name="backdrop">
-      <div v-if="isOpen" class="fixed inset-0 bg-black/50 dark:bg-black/70"></div>
+      <div v-if="isOpen" class="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm"></div>
     </Transition>
     <Transition name="modal">
       <div
@@ -12,6 +12,7 @@
         :aria-labelledby="title"
       >
         <div
+          ref="target"
           class="relative bg-white dark:bg-gray-800 w-[512px] p-4 flex flex-col gap-4 rounded-lg border border-gray-300 dark:border-gray-700"
         >
           <div class="flex items-center justify-between">
@@ -32,9 +33,10 @@
 <script setup lang="ts">
 import BaseButton from '@/components/shared/BaseButton.vue';
 import { ButtonVariant } from '@/types/buttonVariant';
-import { defineProps } from 'vue';
+import { onClickOutside } from '@vueuse/core';
+import { defineProps, onUnmounted, ref, watch } from 'vue';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     isOpen: boolean;
     message: string;
@@ -57,6 +59,8 @@ const emit = defineEmits<{
   (e: 'yes'): void;
 }>();
 
+const target = ref<HTMLElement | null>(null);
+
 const close = () => {
   emit('close');
 };
@@ -64,6 +68,34 @@ const close = () => {
 const yes = () => {
   emit('yes');
 };
+
+onClickOutside(target, () => {
+  console.log('clicked');
+  close();
+});
+
+const preventScroll = () => {
+  document.body.style.overflow = 'hidden';
+};
+
+const allowScroll = () => {
+  document.body.style.overflow = '';
+};
+
+watch(
+  () => props.isOpen,
+  (newValue) => {
+    if (newValue) {
+      preventScroll();
+    } else {
+      allowScroll();
+    }
+  },
+);
+
+onUnmounted(() => {
+  allowScroll();
+});
 </script>
 
 <style scoped>
